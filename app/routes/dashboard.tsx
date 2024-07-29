@@ -19,6 +19,7 @@ import {
   Square2StackIcon,
   TicketIcon,
 } from "@heroicons/react/20/solid";
+import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 
 import { Avatar } from "~/components/ui/avatar";
@@ -48,6 +49,12 @@ import {
   SidebarSpacer,
 } from "~/components/ui/sidebar";
 import { SidebarLayout } from "~/components/ui/sidebar-layout";
+import { requireUserId } from "~/session.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserId(request);
+  return json({});
+}
 
 export default function Dashboard() {
   return (
