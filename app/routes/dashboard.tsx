@@ -1,3 +1,5 @@
+import { Outlet } from "@remix-run/react";
+
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
@@ -235,7 +237,7 @@ export default function Dashboard() {
         </Sidebar>
       }
     >
-      {/* The page content */}
+      <Outlet />
     </SidebarLayout>
   );
 }
