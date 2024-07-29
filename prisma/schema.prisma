@@ -8,31 +8,56 @@ generator client {
 }
 
 model User {
-  id    String @id @default(cuid())
-  email String @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  profileId String?
+  profile   Profile?
+  password  Password?
+  notes     Note[]
+  isAdmin   Boolean   @default(false)
+  status    String    @default("PENDING")
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  password Password?
-  notes    Note[]
+model Profile {
+  id               String   @id @default(cuid())
+  name             String
+  employeeCode     Int
+  currentBalanceId String?  @unique
+  currentBalance   Balance? @relation(fields: [currentBalanceId], references: [id], onDelete: Cascade)
+  tickets          Ticket[]
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Password {
-  hash String
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  hash   String
   userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Balance {
+  id      String   @id @default(cuid())
+  amount  Float    @default(100.0)
+  profile Profile?
+}
+
+model Ticket {
+  id           String   @id @default(cuid())
+  amount       Float
+  ticketNumber String
+  createdAt    DateTime @default(now())
+  profileId    String
+  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
-
+  id        String   @id @default(cuid())
+  title     String
+  body      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

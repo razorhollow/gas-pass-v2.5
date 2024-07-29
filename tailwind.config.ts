@@ -10,7 +10,7 @@ export default {
       },
       colors: {
         text: { DEFAULT: "#ffffff" },
-      }
+      },
     },
   },
   plugins: [],

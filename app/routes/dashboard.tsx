@@ -1,5 +1,3 @@
-import { Outlet } from "@remix-run/react";
-
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
@@ -21,6 +19,7 @@ import {
   Square2StackIcon,
   TicketIcon,
 } from "@heroicons/react/20/solid";
+import { Outlet } from "@remix-run/react";
 
 import { Avatar } from "~/components/ui/avatar";
 import {

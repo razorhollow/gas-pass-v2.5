@@ -36,7 +36,8 @@ export function Avatar({
           : "rounded-full *:rounded-full",
       )}
     >
-      {initials ? <svg
+      {initials ? (
+        <svg
           className="size-full select-none fill-current p-[5%] text-[48px] font-medium uppercase"
           viewBox="0 0 100 100"
           aria-hidden={alt ? undefined : "true"}
@@ -52,7 +53,8 @@ export function Avatar({
           >
             {initials}
           </text>
-        </svg> : null}
+        </svg>
+      ) : null}
       {src ? <img className="size-full" src={src} alt={alt} /> : null}
     </span>
   );
