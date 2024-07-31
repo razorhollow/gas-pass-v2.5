@@ -20,7 +20,7 @@ import {
   TicketIcon,
 } from "@heroicons/react/20/solid";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet } from "@remix-run/react";
+import { Form, Outlet } from "@remix-run/react";
 
 import { Avatar } from "~/components/ui/avatar";
 import {
@@ -107,7 +107,7 @@ export default function Dashboard() {
             <Dropdown>
               <DropdownButton as={SidebarItem} className="lg:mb-2.5">
                 <Avatar src="/tailwind-logo.svg" />
-                <SidebarLabel>Tailwind Labs</SidebarLabel>
+                <SidebarLabel>RMI</SidebarLabel>
                 <ChevronDownIcon />
               </DropdownButton>
               <DropdownMenu
@@ -121,7 +121,7 @@ export default function Dashboard() {
                 <DropdownDivider />
                 <DropdownItem href="/teams/1">
                   <Avatar slot="icon" src="/tailwind-logo.svg" />
-                  <DropdownLabel>Tailwind Labs</DropdownLabel>
+                  <DropdownLabel>RMI</DropdownLabel>
                 </DropdownItem>
                 <DropdownItem href="/teams/2">
                   <Avatar
@@ -233,10 +233,14 @@ export default function Dashboard() {
                   <DropdownLabel>Share feedback</DropdownLabel>
                 </DropdownItem>
                 <DropdownDivider />
-                <DropdownItem href="/logout">
-                  <ArrowRightStartOnRectangleIcon />
-                  <DropdownLabel>Sign out</DropdownLabel>
-                </DropdownItem>
+                <Form action="/logout" method="POST" className="flex">
+                  <button type="submit" className="w-full">
+                    <DropdownItem className="flex gap-4 text-nowrap w-full justify-between">
+                      <ArrowRightStartOnRectangleIcon />
+                      <DropdownLabel>Sign out</DropdownLabel>
+                    </DropdownItem>
+                  </button>
+                </Form>
               </DropdownMenu>
             </Dropdown>
           </SidebarFooter>

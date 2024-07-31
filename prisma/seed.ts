@@ -27,28 +27,28 @@ async function seed() {
 
   const users = [
     {
-      email: 'user1@example.com',
-      name: 'User One',
+      email: "user1@example.com",
+      name: "User One",
       employeeCode: 1001,
     },
     {
-      email: 'user2@example.com',
-      name: 'User Two',
+      email: "user2@example.com",
+      name: "User Two",
       employeeCode: 1002,
     },
     {
-      email: 'user3@example.com',
-      name: 'User Three',
+      email: "user3@example.com",
+      name: "User Three",
       employeeCode: 1003,
     },
     {
-      email: 'user4@example.com',
-      name: 'User Four',
+      email: "user4@example.com",
+      name: "User Four",
       employeeCode: 1004,
     },
     {
-      email: 'user5@example.com',
-      name: 'User Five',
+      email: "user5@example.com",
+      name: "User Five",
       employeeCode: 1005,
     },
   ];
@@ -58,7 +58,7 @@ async function seed() {
       data: {
         email: userData.email,
         password: { create: { hash: employeePassword } },
-        status: 'ACTIVE',
+        status: "ACTIVE",
         profile: {
           create: {
             name: userData.name,
@@ -66,8 +66,16 @@ async function seed() {
             currentBalance: { create: { amount: 100.0 } },
             tickets: {
               create: [
-                { amount: 10.0, ticketNumber: `TICKET_${userData.employeeCode}_1`, createdAt: new Date() },
-                { amount: 20.0, ticketNumber: `TICKET_${userData.employeeCode}_2`, createdAt: new Date() },
+                {
+                  amount: 10.0,
+                  ticketNumber: `TICKET_${userData.employeeCode}_1`,
+                  createdAt: new Date(),
+                },
+                {
+                  amount: 20.0,
+                  ticketNumber: `TICKET_${userData.employeeCode}_2`,
+                  createdAt: new Date(),
+                },
               ],
             },
           },
@@ -80,19 +88,27 @@ async function seed() {
 
   const admin = await prisma.user.create({
     data: {
-      email: 'admin@example.com',
+      email: "admin@example.com",
       password: { create: { hash: hashedAdminPassword } },
-      status: 'ACTIVE',
+      status: "ACTIVE",
       isAdmin: true,
       profile: {
         create: {
-          name: 'Admin User',
+          name: "Admin User",
           employeeCode: 1000,
           currentBalance: { create: { amount: 100.0 } },
           tickets: {
             create: [
-              { amount: 50.0, ticketNumber: 'TICKET_ADMIN_1', createdAt: new Date() },
-              { amount: 75.0, ticketNumber: 'TICKET_ADMIN_2', createdAt: new Date() },
+              {
+                amount: 50.0,
+                ticketNumber: "TICKET_ADMIN_1",
+                createdAt: new Date(),
+              },
+              {
+                amount: 75.0,
+                ticketNumber: "TICKET_ADMIN_2",
+                createdAt: new Date(),
+              },
             ],
           },
         },

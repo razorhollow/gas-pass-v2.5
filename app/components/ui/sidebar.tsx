@@ -160,12 +160,10 @@ export const SidebarItem = forwardRef(function SidebarItem(
 
   return (
     <span className={clsx(className, "relative")}>
-      {current && (
-        <motion.span
+      {current ? <motion.span
           layoutId="current-indicator"
           className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
-        />
-      )}
+        /> : null}
       {"href" in props ? (
         <Headless.CloseButton as={Fragment} ref={ref}>
           <Link
