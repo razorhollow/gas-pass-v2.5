@@ -1,10 +1,22 @@
 import { useMatches } from "@remix-run/react";
-import { useMemo } from "react";
 import { DateTime } from 'luxon';
+import { useMemo } from "react";
 import type { User } from "~/models/user.server";
 
 const DEFAULT_REDIRECT = "/";
 const USER_TIME_ZONE = 'America/New_York';
+
+// Get the start and end of the current week
+export function getWeekRange() {
+  const now = DateTime.now().setZone('America/New_York');
+  const startOfWeek = now.startOf('week').minus({ days: now.weekday - 1 }); // Start of Monday
+  const endOfWeek = startOfWeek.plus({ days: 6 }); // End of Sunday
+
+  return {
+    startOfWeek: startOfWeek.toJSDate(),
+    endOfWeek: endOfWeek.toJSDate()
+  };
+}
 
 // Convert server date to user's time zone and format as MM/DD/YYYY
 export function formatDateToUserTimeZone(date: Date | string): string {
