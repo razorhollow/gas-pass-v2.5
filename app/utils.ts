@@ -1,9 +1,22 @@
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
-
+import { DateTime } from 'luxon';
 import type { User } from "~/models/user.server";
 
 const DEFAULT_REDIRECT = "/";
+const USER_TIME_ZONE = 'America/New_York';
+
+// Convert server date to user's time zone and format as MM/DD/YYYY
+export function formatDateToUserTimeZone(date: Date | string): string {
+  let dateTime;
+  if (typeof date === 'string') {
+    dateTime = DateTime.fromISO(date, { zone: 'utc' });
+  } else {
+    dateTime = DateTime.fromJSDate(date, { zone: 'utc' });
+  }
+
+  return dateTime.setZone(USER_TIME_ZONE).toFormat('MM/dd/yyyy');
+}
 
 /**
  * This should be used any time the redirect path is user-provided
