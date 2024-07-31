@@ -1,6 +1,7 @@
 import { json, LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { DateTime } from "luxon";
+import { QrCodeIcon } from "@heroicons/react/20/solid";
 
 import { Button } from "~/components/ui/button";
 import { getRecentTicketListItems } from "~/models/ticket.server";
@@ -42,7 +43,6 @@ export default function EmployeeDashboard() {
   const user = useUser();
 
   // Placeholder balance
-  const balance = 37.26;
   const data = useLoaderData<typeof loader>();
 
   return (
@@ -54,7 +54,9 @@ export default function EmployeeDashboard() {
         </div>
       ) : (
         <div>
-          <Button>Pump Gas</Button>
+          <Link to="dashboard/$ticketId">
+            <Button><QrCodeIcon />Pump Gas</Button>
+          </Link>
           <h3>Remaining Balance</h3>
           <div className="overflow-hidden rounded-full bg-gray-200">
             <div style={{ width: `${data.remainingBalance}%` }} className="h-2 rounded-full bg-green-500" />
