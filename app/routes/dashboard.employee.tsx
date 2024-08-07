@@ -1,6 +1,6 @@
 import { QrCodeIcon } from "@heroicons/react/20/solid";
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { DateTime } from "luxon";
 
 import { Button } from "~/components/ui/button";
@@ -44,7 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const newTicket = await createTicket({ userId });
 
-  return redirect(`dashboard/tickets/${newTicket.id}`);
+  return redirect(`/dashboard/tickets/${newTicket.id}`);
 }
 
 export default function EmployeeDashboard() {
@@ -61,9 +61,9 @@ export default function EmployeeDashboard() {
         </div>
       ) : (
         <div>
-          <Link to="dashboard/$ticketId">
-            <Button><QrCodeIcon />Pump Gas</Button>
-          </Link>
+          <Form method="POST">
+            <Button type="submit"><QrCodeIcon />Pump Gas</Button>
+          </Form>
           <h3>Remaining Balance</h3>
           <div className="overflow-hidden rounded-full bg-gray-200">
             <div style={{ width: `${data.remainingBalance}%` }} className="h-2 rounded-full bg-green-500" />
