@@ -63,17 +63,14 @@ async function seed() {
           create: {
             name: userData.name,
             employeeCode: userData.employeeCode,
-            currentBalance: { create: { amount: 100.0 } },
             tickets: {
               create: [
                 {
                   amount: 10.0,
-                  ticketNumber: `TICKET_${userData.employeeCode}_1`,
                   createdAt: new Date(),
                 },
                 {
                   amount: 20.0,
-                  ticketNumber: `TICKET_${userData.employeeCode}_2`,
                   createdAt: new Date(),
                 },
               ],
@@ -96,17 +93,14 @@ async function seed() {
         create: {
           name: "Admin User",
           employeeCode: 1000,
-          currentBalance: { create: { amount: 100.0 } },
           tickets: {
             create: [
               {
                 amount: 50.0,
-                ticketNumber: "TICKET_ADMIN_1",
                 createdAt: new Date(),
               },
               {
                 amount: 75.0,
-                ticketNumber: "TICKET_ADMIN_2",
                 createdAt: new Date(),
               },
             ],

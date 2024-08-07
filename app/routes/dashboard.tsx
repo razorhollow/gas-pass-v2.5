@@ -63,15 +63,12 @@ export default function Dashboard() {
         <Navbar>
           <NavbarSpacer />
           <NavbarSection>
-            <NavbarItem href="/search" aria-label="Search">
-              <MagnifyingGlassIcon />
-            </NavbarItem>
             <NavbarItem href="/inbox" aria-label="Inbox">
               <InboxIcon />
             </NavbarItem>
             <Dropdown>
               <DropdownButton as={NavbarItem}>
-                <Avatar src="/profile-photo.jpg" square />
+                <UserIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="bottom end">
                 <DropdownItem href="/my-profile">

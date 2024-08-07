@@ -1,10 +1,10 @@
-import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { DateTime } from "luxon";
 import { QrCodeIcon } from "@heroicons/react/20/solid";
+import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { DateTime } from "luxon";
 
 import { Button } from "~/components/ui/button";
-import { getRecentTicketListItems } from "~/models/ticket.server";
+import { getRecentTicketListItems, createTicket } from "~/models/ticket.server";
 import { requireUserId } from "~/session.server";
 import { useUser, formatDateToUserTimeZone, getWeekRange } from "~/utils";
 
@@ -39,10 +39,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ recentTickets: formattedTickets, remainingBalance });
 }
 
+export async function action({ request }: ActionFunctionArgs) {
+  const userId = await requireUserId(request);
+
+  const newTicket = await createTicket({ userId });
+
+  return redirect(`dashboard/tickets/${newTicket.id}`);
+}
+
 export default function EmployeeDashboard() {
   const user = useUser();
 
-  // Placeholder balance
   const data = useLoaderData<typeof loader>();
 
   return (
