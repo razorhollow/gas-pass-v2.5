@@ -72,11 +72,8 @@ export function createTicket({ userId }: { userId: User["id"] }) {
 
 
 
-export function deleteNote({
-  id,
-  userId,
-}: Pick<Ticket, "id"> & { userId: User["id"] }) {
-  return prisma.note.deleteMany({
-    where: { id, userId },
+export function deleteTicket({ id }:Pick<Ticket, "id">) {
+  return prisma.ticket.deleteMany({
+    where: { id },
   });
 }
