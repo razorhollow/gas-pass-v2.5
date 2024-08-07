@@ -1,6 +1,6 @@
 import { QrCodeIcon } from "@heroicons/react/20/solid";
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, NavLink, useLoaderData } from "@remix-run/react";
 import { DateTime } from "luxon";
 
 import { Button } from "~/components/ui/button";
@@ -73,6 +73,7 @@ export default function EmployeeDashboard() {
             <h3>Recent Transactions</h3>
             <ul className='divide-y divide-gray-200 bg-zinc-800 rounded-xl p-4'>
               {data.recentTickets.map(ticket => (
+                <NavLink key={ticket.id} to={`/dashboard/tickets/${ticket.id}`} className='flex justify-between py-4'>
                 <li key={ticket.id} className='flex justify-between py-4'>
                   <div className="w-full grid grid-cols-3">
                     <h4>{ticket.id.slice(19)}</h4>
@@ -80,6 +81,7 @@ export default function EmployeeDashboard() {
                     <p>{ticket.createdAt}</p>
                   </div>
                 </li>
+                </NavLink>
               ))}
             </ul>
           </div>
