@@ -56,6 +56,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
 
   if (intent === "update") {
     // Update ticket
+    console.log('upating ticket...')
   } else if (intent === "delete" && (user.isAdmin || user.profileId === profileId)) {
     await deleteTicket({ id: params.ticketId! });
     return redirect("/dashboard");

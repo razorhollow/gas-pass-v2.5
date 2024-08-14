@@ -58,8 +58,25 @@ export function getRecentTicketListItems({ userId }: { userId: User["id"] }) {
   });
 }
 
-//create a new ticket with an amount of 0
-export function createTicket({ userId }: { userId: User["id"] }) {
+export async function createTicket({ userId }: { userId: User["id"] }) {
+  // Check if there is an existing ticket with amount 0 for the given user
+  const existingTicket = await prisma.ticket.findFirst({
+    where: {
+      profile: {
+        userId: userId,
+      },
+      amount: 0,
+    },
+  });
+
+  // If such a ticket exists, return it instead of creating a new one
+  if (existingTicket) {
+    console.log("ticket with zero balance found...")
+    return existingTicket;
+  }
+
+  // Otherwise, create a new ticket with amount 0
+  console.log("no zero balance ticket found...")
   return prisma.ticket.create({
     data: {
       amount: 0,
