@@ -99,11 +99,11 @@ export default function Dashboard() {
           </SidebarHeader>
           <SidebarBody>
             <SidebarSection>
-              <SidebarItem href="/">
+              <SidebarItem href="/dashboard">
                 <HomeIcon />
                 <SidebarLabel>Home</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/orders">
+              <SidebarItem href="/dashboard/tickets">
                 <TicketIcon />
                 <SidebarLabel>Tickets</SidebarLabel>
               </SidebarItem>
