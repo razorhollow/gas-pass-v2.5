@@ -94,3 +94,13 @@ export function deleteTicket({ id }:Pick<Ticket, "id">) {
     where: { id },
   });
 }
+
+export function updateTicket({
+  id,
+  amount,
+}: Pick<Ticket, "id" | "amount">) {
+  return prisma.ticket.update({
+    where: { id },
+    data: { amount },
+  });
+} 

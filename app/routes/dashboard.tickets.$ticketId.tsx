@@ -8,7 +8,7 @@ import { Input } from "~/components/ui/input";
 import { getWeekRange, formatDateToUserTimeZone } from "~/utils"; // Make sure formatDateToUserTimeZone is imported correctly
 
 
-import { getTicket, getRecentTicketListItems, deleteTicket } from "../models/ticket.server";
+import { getTicket, getRecentTicketListItems, deleteTicket, updateTicket } from "../models/ticket.server";
 import { requireUser, requireUserId } from "../session.server";
 
 const WEEKLY_ALLOWANCE = 100;
@@ -56,7 +56,15 @@ export async function action({ params, request }: ActionFunctionArgs) {
 
   if (intent === "update") {
     // Update ticket
+    const amount = formData.get("amount");
+    if (typeof amount !== "string" || parseInt(amount) === 0) {
+      throw new Error("Amount is required");
+    }
+
+    await updateTicket({ id: params.ticketId!, amount: parseInt(amount) });
+
     console.log('upating ticket...')
+    return redirect('/dashboard')
   } else if (intent === "delete" && (user.isAdmin || user.profileId === profileId)) {
     await deleteTicket({ id: params.ticketId! });
     return redirect("/dashboard");
@@ -92,7 +100,7 @@ export default function TicketDetail() {
       ) : (
         <div>
           <h1>Ticket Detail</h1>
-          <p>Ticket ID: {ticket.id}</p>
+          <p>Ticket ID: {ticket.id.toUpperCase()}</p>
           <p>Amount: {ticket.amount}</p>
           <p>Created At: {new Date(ticket.createdAt).toLocaleString()}</p>
         </div>

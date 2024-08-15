@@ -35,7 +35,7 @@ export default function TicketIndex() {
                             <NavLink 
                                 to={ticket.id}
                                 className='w-full grid grid-cols-3'>
-                                <h4>{ticket.id.slice(19)}</h4>
+                                <h4 className="tracking-wider">{ticket.id.slice(19).toUpperCase()}</h4>
                                 <p>${ticket.amount.toFixed(2)}</p>
                                 <p>{ticket.createdAt}</p>
                             </NavLink>

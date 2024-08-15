@@ -9,7 +9,15 @@ const USER_TIME_ZONE = 'America/New_York';
 // Get the start and end of the current week
 export function getWeekRange() {
   const now = DateTime.now().setZone('America/New_York');
-  const startOfWeek = now.startOf('week').minus({ days: now.weekday - 1 }); // Start of Monday
+  
+  // Adjust startOfWeek to Monday
+  const startOfWeek = now.startOf('week').plus({ days: 1 });
+
+  // If today is Sunday, move to previous Monday
+  if (now.weekday === 7) {
+    startOfWeek.minus({ days: 7 });
+  }
+  
   const endOfWeek = startOfWeek.plus({ days: 6 }); // End of Sunday
 
   return {
