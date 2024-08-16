@@ -72,9 +72,13 @@ export default function Dashboard() {
                   <DropdownLabel>Privacy policy</DropdownLabel>
                 </DropdownItem>
                 <DropdownDivider />
-                <DropdownItem href="/logout">
+                <DropdownItem>
                   <ArrowRightStartOnRectangleIcon />
-                  <DropdownLabel>Sign out</DropdownLabel>
+                  <DropdownLabel>
+                    <Form action="/logout" method="POST">
+                      <button type="submit" className="w-full text-left">Sign out</button>
+                    </Form>
+                  </DropdownLabel>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -89,6 +93,32 @@ export default function Dashboard() {
                 <SidebarLabel>RMI</SidebarLabel>
                 <ChevronDownIcon />
               </DropdownButton>
+              <DropdownMenu className="min-w-64" anchor="top start">
+                <DropdownItem href="/my-profile">
+                  <UserIcon />
+                  <DropdownLabel>My profile</DropdownLabel>
+                </DropdownItem>
+                <DropdownItem href="/settings">
+                  <Cog8ToothIcon />
+                  <DropdownLabel>Settings</DropdownLabel>
+                </DropdownItem>
+                <DropdownDivider />
+                <DropdownItem href="/privacy-policy">
+                  <ShieldCheckIcon />
+                  <DropdownLabel>Privacy policy</DropdownLabel>
+                </DropdownItem>
+                <DropdownDivider />
+                <DropdownItem>
+                  <ArrowRightStartOnRectangleIcon />
+                  <DropdownLabel>
+                    <Form action="/logout" method="POST">
+                      <button type="submit" className="w-full text-left">
+                        Sign out
+                      </button>
+                    </Form>
+                  </DropdownLabel>
+                </DropdownItem>
+              </DropdownMenu>
             </Dropdown>
             <SidebarSection className="max-lg:hidden">
               <SidebarItem href="/search">
@@ -107,39 +137,12 @@ export default function Dashboard() {
                 <TicketIcon />
                 <SidebarLabel>Tickets</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/settings">
-                <Cog6ToothIcon />
-                <SidebarLabel>Settings</SidebarLabel>
-              </SidebarItem>
             </SidebarSection>
             <SidebarSpacer />
           </SidebarBody>
           <SidebarFooter className="max-lg:hidden">
             <Dropdown>
-              <DropdownMenu className="min-w-64" anchor="top start">
-                <DropdownItem href="/my-profile">
-                  <UserIcon />
-                  <DropdownLabel>My profile</DropdownLabel>
-                </DropdownItem>
-                <DropdownItem href="/settings">
-                  <Cog8ToothIcon />
-                  <DropdownLabel>Settings</DropdownLabel>
-                </DropdownItem>
-                <DropdownDivider />
-                <DropdownItem href="/privacy-policy">
-                  <ShieldCheckIcon />
-                  <DropdownLabel>Privacy policy</DropdownLabel>
-                </DropdownItem>
-                <DropdownDivider />
-                <Form action="/logout" method="POST" className="flex">
-                  <button type="submit" className="w-full">
-                    <DropdownItem className="flex gap-4 text-nowrap w-full justify-between">
-                      <ArrowRightStartOnRectangleIcon />
-                      <DropdownLabel>Sign out</DropdownLabel>
-                    </DropdownItem>
-                  </button>
-                </Form>
-              </DropdownMenu>
+              
             </Dropdown>
           </SidebarFooter>
         </Sidebar>
