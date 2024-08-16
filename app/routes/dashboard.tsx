@@ -1,3 +1,4 @@
+
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
@@ -6,13 +7,13 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import {
-  Cog6ToothIcon,
   HomeIcon,
   MagnifyingGlassIcon,
   TicketIcon,
+  UsersIcon
 } from "@heroicons/react/20/solid";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, Outlet } from "@remix-run/react";
+import { useLoaderData , Form, Outlet } from "@remix-run/react";
 
 import {
   Dropdown,
@@ -39,14 +40,15 @@ import {
   SidebarSpacer,
 } from "~/components/ui/sidebar";
 import { SidebarLayout } from "~/components/ui/sidebar-layout";
-import { requireUserId } from "~/session.server";
+import { requireUser } from "~/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  await requireUserId(request);
-  return json({});
+  const user = await requireUser(request);
+  return json({ user });
 }
 
 export default function Dashboard() {
+  const { user } = useLoaderData<typeof loader>();
   return (
     <SidebarLayout
       navbar={
@@ -137,6 +139,14 @@ export default function Dashboard() {
                 <TicketIcon />
                 <SidebarLabel>Tickets</SidebarLabel>
               </SidebarItem>
+              { user.isAdmin ? 
+                <SidebarItem href="/dashboard/admin/users">
+                  <UsersIcon />
+                  <SidebarLabel>Users</SidebarLabel>
+                </SidebarItem>
+                : 
+                null
+              }
             </SidebarSection>
             <SidebarSpacer />
           </SidebarBody>
