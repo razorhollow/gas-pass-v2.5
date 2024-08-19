@@ -60,7 +60,7 @@ export default function Dashboard() {
                 <UserIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="bottom end">
-                <DropdownItem href="/my-profile">
+                <DropdownItem href={user.id}>
                   <UserIcon />
                   <DropdownLabel>My profile</DropdownLabel>
                 </DropdownItem>
@@ -96,7 +96,7 @@ export default function Dashboard() {
                 <ChevronDownIcon />
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="top start">
-                <DropdownItem href="/my-profile">
+                <DropdownItem href={user.id}>
                   <UserIcon />
                   <DropdownLabel>My profile</DropdownLabel>
                 </DropdownItem>
@@ -140,7 +140,7 @@ export default function Dashboard() {
                 <SidebarLabel>Tickets</SidebarLabel>
               </SidebarItem>
               { user.isAdmin ? 
-                <SidebarItem href="/dashboard/admin/users">
+                <SidebarItem href="/dashboard/users">
                   <UsersIcon />
                   <SidebarLabel>Users</SidebarLabel>
                 </SidebarItem>
