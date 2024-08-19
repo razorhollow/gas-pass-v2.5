@@ -13,6 +13,22 @@ export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
 
+export async function getUsers() {
+  return prisma.user.findMany({
+    select: {
+      id: true,         // Include the id field (optional)
+      email: true,      // Include the email field
+      status: true,     // Include the status field
+      profile: {
+        select: {
+          name: true,           // Include the name field from Profile
+          employeeCode: true,   // Include the employeeCode field from Profile
+        },
+      },
+    },
+  });
+}
+
 export async function createUser(email: User["email"], password: string) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
