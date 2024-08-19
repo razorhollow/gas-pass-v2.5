@@ -1,16 +1,32 @@
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import type { LoaderFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import { DateTime } from 'luxon';
 
 import { getUsers } from '~/models/user.server';
 import { requireUser } from '~/session.server';
 
-const statuses = {
-    INNACTIVE: 'text-gray-500 bg-gray-100/10',
-    ACTIVE: 'text-green-500 bg-green-400/10',
-    PENDING: 'text-yellow-500 bg-yellow-400/10',
+interface User {
+    id: string;
+    email: string;
+    status: 'INNACTIVE' | 'ACTIVE' | 'PENDING';
+    profile: {
+        name: string;
+        employeeCode: number;
+    } | null;
+    createdAt: Date;
 }
+
+type LoaderData = 
+    | { error: string }
+    | { users: User[] };
+
+const statuses: Record<User['status'], string> = {
+    INNACTIVE: 'bg-red-500',
+    ACTIVE: 'bg-green-500',
+    PENDING: 'bg-yellow-500',
+};
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -23,14 +39,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         return json({ error: 'Unauthorized' }, { status: 401 });
     }
     const users = await getUsers();
-  // Retrieve data based on params or request
-  // const data = await someDatabaseFunction(params.id);
+
+    users.sort((a, b) => {
+        const order: Record<string, number> = { PENDING: 0, ACTIVE: 1, INNACTIVE: 2 };
+        return order[a.status] - order[b.status];
+    });
 
     return json({ users });
 };
 
 export default function UsersIndex() {
-    const data = useLoaderData<typeof loader>();
+    const data = useLoaderData<LoaderData>();
     console.log(data);
     if ('error' in data) {
         return <div>Error: {data.error}</div>;
@@ -60,7 +79,7 @@ export default function UsersIndex() {
                             <svg viewBox="0 0 2 2" className='h-0.5 w-0.5 flex-none fill-gray-300'>
                                 <circle r={1} cx={1} cy={1} />
                             </svg>
-                            <p>Joined 1/1/2019</p>
+                            <p>Joined {DateTime.fromJSDate(new Date(user.createdAt)).toLocaleString(DateTime.DATE_MED)}</p>
                         </div>
                     </div>
                     <ChevronRightIcon aria-hidden='true' className='h-5 w-5 text-gray-400 flex-none' />

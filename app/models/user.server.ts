@@ -6,7 +6,7 @@ import { prisma } from "~/db.server";
 export type { User } from "@prisma/client";
 
 export async function getUserById(id: User["id"]) {
-  return prisma.user.findUnique({ where: { id } });
+  return prisma.user.findUnique({ where: { id }, include: { profile: true } });
 }
 
 export async function getUserByEmail(email: User["email"]) {
@@ -25,6 +25,7 @@ export async function getUsers() {
           employeeCode: true,   // Include the employeeCode field from Profile
         },
       },
+      createdAt: true,  
     },
   });
 }
@@ -76,4 +77,20 @@ export async function verifyLogin(
   const { password: _password, ...userWithoutPassword } = userWithPassword;
 
   return userWithoutPassword;
+}
+
+// create an updateUserProfile function that updates the user's profile with name: `${firstName} ${lastName}` and employeeCode: employeeId
+export async function updateUserProfile(userId: User["id"], { firstName, lastName, employeeId }: { firstName: string; lastName: string; employeeId: string }) {
+  return prisma.profile.upsert({
+    where: { userId },
+    create: {
+      name: `${firstName} ${lastName}`,
+      employeeCode: parseInt(employeeId),
+      user: { connect: { id: userId } },
+    },
+    update: {
+      name: `${firstName} ${lastName}`,
+      employeeCode: parseInt(employeeId),
+    },
+  });
 }
