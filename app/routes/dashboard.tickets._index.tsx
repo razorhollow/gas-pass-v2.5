@@ -1,24 +1,8 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Ticket } from "@prisma/client";
+import { Profile } from "@prisma/client";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { NavLink, useLoaderData } from "@remix-run/react";
-
-interface Profile {
-  id: string;
-  name: string;
-  employeeCode: number;
-}
-
-interface TicketWithProfile extends Ticket {
-  profile: Profile;
-}
-
-interface TicketWithoutProfile extends Ticket {
-  profile?: undefined;
-}
-
-type TicketType = TicketWithProfile | TicketWithoutProfile;
 
 import {
   getAdminTicketListItems,
@@ -27,23 +11,37 @@ import {
 import { requireUser } from "~/session.server";
 import { formatDateToUserTimeZone, useUser } from "~/utils";
 
+interface CustomTicket {
+  id: string;
+  amount: number;
+  createdAt: string;
+  profile?: Profile
+}
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const user = await requireUser(request);
   const userId = user.id;
-  let tickets: TicketType[] = [];
+
+  let tickets: CustomTicket[] = [];
+
   if (user.isAdmin) {
-    tickets = await getAdminTicketListItems();
+    const adminTickets = await getAdminTicketListItems();
+    tickets = adminTickets.map((ticket) => ({
+      ...ticket,
+      createdAt: formatDateToUserTimeZone(ticket.createdAt), // Now, this can be a string
+    }))
   } else {
-    tickets = await getTicketListItems({ userId });
+    const userTickets = await getTicketListItems({ userId });
+    tickets = userTickets.map((ticket) => ({
+      ...ticket,
+      createdAt: formatDateToUserTimeZone(ticket.createdAt), // Now, this can be a string
+    }));
   }
 
-  // Format the createdAt date
-  const formattedTickets = tickets.map((ticket: TicketType) => ({
-    ...ticket,
-    createdAt: formatDateToUserTimeZone(ticket.createdAt),
-  }));
-  return json(formattedTickets);
+  return json(tickets);
 }
+
+
 
 export default function TicketIndex() {
   const tickets = useLoaderData<typeof loader>();
