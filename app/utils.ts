@@ -1,42 +1,42 @@
 import { useMatches } from "@remix-run/react";
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
 
 const DEFAULT_REDIRECT = "/";
-const USER_TIME_ZONE = 'America/New_York';
+const USER_TIME_ZONE = "America/New_York";
 
 // Get the start and end of the current week
 export function getWeekRange() {
-  const now = DateTime.now().setZone('America/New_York');
-  
+  const now = DateTime.now().setZone("America/New_York");
+
   // Adjust startOfWeek to Monday
-  const startOfWeek = now.startOf('week').plus({ days: 1 });
+  const startOfWeek = now.startOf("week").plus({ days: 1 });
 
   // If today is Sunday, move to previous Monday
   if (now.weekday === 7) {
     startOfWeek.minus({ days: 7 });
   }
-  
+
   const endOfWeek = startOfWeek.plus({ days: 6 }); // End of Sunday
 
   return {
     startOfWeek: startOfWeek.toJSDate(),
-    endOfWeek: endOfWeek.toJSDate()
+    endOfWeek: endOfWeek.toJSDate(),
   };
 }
 
 // Convert server date to user's time zone and format as MM/DD/YYYY
 export function formatDateToUserTimeZone(date: Date | string): string {
   let dateTime;
-  if (typeof date === 'string') {
-    dateTime = DateTime.fromISO(date, { zone: 'utc' });
+  if (typeof date === "string") {
+    dateTime = DateTime.fromISO(date, { zone: "utc" });
   } else {
-    dateTime = DateTime.fromJSDate(date, { zone: 'utc' });
+    dateTime = DateTime.fromJSDate(date, { zone: "utc" });
   }
 
-  return dateTime.setZone(USER_TIME_ZONE).toFormat('MM/dd/yyyy');
+  return dateTime.setZone(USER_TIME_ZONE).toFormat("MM/dd/yyyy");
 }
 
 /**

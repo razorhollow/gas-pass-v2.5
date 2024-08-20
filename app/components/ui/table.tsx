@@ -168,14 +168,16 @@ export function TableCell({
         !bleed && "sm:first:pl-1 sm:last:pr-1",
       )}
     >
-      {href ? <Link
+      {href ? (
+        <Link
           data-row-link
           href={href}
           target={target}
           aria-label={title}
           tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}
           className="absolute inset-0 focus:outline-none"
-        /> : null}
+        />
+      ) : null}
       {children}
     </td>
   );

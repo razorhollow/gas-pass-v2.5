@@ -1,5 +1,9 @@
 import { Ticket } from "@prisma/client";
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
@@ -8,8 +12,12 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { getWeekRange, formatDateToUserTimeZone } from "~/utils"; // Make sure formatDateToUserTimeZone is imported correctly
 
-
-import { getTicket, getRecentTicketListItems, deleteTicket, updateTicket } from "../models/ticket.server";
+import {
+  getTicket,
+  getRecentTicketListItems,
+  deleteTicket,
+  updateTicket,
+} from "../models/ticket.server";
 import { requireUser, requireUserId } from "../session.server";
 
 const WEEKLY_ALLOWANCE = 100;
@@ -17,22 +25,28 @@ const WEEKLY_ALLOWANCE = 100;
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const ticketId = params.ticketId;
   const userId = await requireUserId(request);
-  
+
   if (!ticketId) {
     throw new Error("Ticket ID is required");
   }
-  
+
   const ticket = await getTicket({ id: ticketId, userId });
-  
+
   const { startOfWeek, endOfWeek } = getWeekRange();
   const recentTickets = await getRecentTicketListItems({ userId });
 
   const weekTickets = recentTickets.filter((ticket: Ticket) => {
     const createdAt = DateTime.fromJSDate(ticket.createdAt);
-    return createdAt >= DateTime.fromJSDate(startOfWeek) && createdAt <= DateTime.fromJSDate(endOfWeek);
+    return (
+      createdAt >= DateTime.fromJSDate(startOfWeek) &&
+      createdAt <= DateTime.fromJSDate(endOfWeek)
+    );
   });
 
-  const totalSpent = weekTickets.reduce((sum, ticket) => sum + ticket.amount, 0);
+  const totalSpent = weekTickets.reduce(
+    (sum, ticket) => sum + ticket.amount,
+    0,
+  );
   const remainingBalance = WEEKLY_ALLOWANCE - totalSpent;
 
   const formattedTickets = recentTickets.map((ticket: Ticket) => ({
@@ -66,22 +80,33 @@ export async function action({ params, request }: ActionFunctionArgs) {
 
     const weekTickets = recentTickets.filter((ticket: Ticket) => {
       const createdAt = DateTime.fromJSDate(ticket.createdAt);
-      return createdAt >= DateTime.fromJSDate(startOfWeek) && createdAt <= DateTime.fromJSDate(endOfWeek);
+      return (
+        createdAt >= DateTime.fromJSDate(startOfWeek) &&
+        createdAt <= DateTime.fromJSDate(endOfWeek)
+      );
     });
 
-    const totalSpent = weekTickets.reduce((sum, ticket) => sum + ticket.amount, 0);
+    const totalSpent = weekTickets.reduce(
+      (sum, ticket) => sum + ticket.amount,
+      0,
+    );
     const remainingBalance = WEEKLY_ALLOWANCE - totalSpent;
 
     // Ensure the new amount doesn't reduce the balance below zero
     if (parseFloat(amount) > remainingBalance) {
-      throw new Error(`Amount exceeds remaining balance of $${remainingBalance.toFixed(2)}`);
+      throw new Error(
+        `Amount exceeds remaining balance of $${remainingBalance.toFixed(2)}`,
+      );
     }
 
     // Update the ticket if validation passes
     await updateTicket({ id: params.ticketId!, amount: parseFloat(amount) });
 
-    return redirect('/dashboard');
-  } else if (intent === "delete" && (user.isAdmin || user.profileId === profileId)) {
+    return redirect("/dashboard");
+  } else if (
+    intent === "delete" &&
+    (user.isAdmin || user.profileId === profileId)
+  ) {
     await deleteTicket({ id: params.ticketId! });
     return redirect("/dashboard");
   } else {
@@ -101,7 +126,9 @@ export default function TicketDetail() {
 
     // Check if the entered amount exceeds the remaining balance
     if (parseFloat(value) > remainingBalance) {
-      setError(`The amount cannot exceed the remaining balance of $${remainingBalance.toFixed(2)}`);
+      setError(
+        `The amount cannot exceed the remaining balance of $${remainingBalance.toFixed(2)}`,
+      );
       setSubmitDisabled(true);
     } else {
       setError("");
@@ -131,10 +158,17 @@ export default function TicketDetail() {
                 onChange={handleAmountChange}
               />
               {error ? <p className="text-red-600">{error}</p> : null}
-              <Button type="submit" name="intent" value="update" disabled={isSubmitDisabled}>
+              <Button
+                type="submit"
+                name="intent"
+                value="update"
+                disabled={isSubmitDisabled}
+              >
                 Submit Ticket
               </Button>
-              <Button type="submit" name="intent" value="delete">Cancel</Button>
+              <Button type="submit" name="intent" value="delete">
+                Cancel
+              </Button>
             </Form>
           </div>
         </div>

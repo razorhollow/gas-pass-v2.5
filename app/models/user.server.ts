@@ -16,16 +16,16 @@ export async function getUserByEmail(email: User["email"]) {
 export async function getUsers() {
   return prisma.user.findMany({
     select: {
-      id: true,         // Include the id field (optional)
-      email: true,      // Include the email field
-      status: true,     // Include the status field
+      id: true, // Include the id field (optional)
+      email: true, // Include the email field
+      status: true, // Include the status field
       profile: {
         select: {
-          name: true,           // Include the name field from Profile
-          employeeCode: true,   // Include the employeeCode field from Profile
+          name: true, // Include the name field from Profile
+          employeeCode: true, // Include the employeeCode field from Profile
         },
       },
-      createdAt: true,  
+      createdAt: true,
     },
   });
 }
@@ -80,7 +80,14 @@ export async function verifyLogin(
 }
 
 // create an updateUserProfile function that updates the user's profile with name: `${firstName} ${lastName}` and employeeCode: employeeId
-export async function updateUserProfile(userId: User["id"], { firstName, lastName, employeeId }: { firstName: string; lastName: string; employeeId: string }) {
+export async function updateUserProfile(
+  userId: User["id"],
+  {
+    firstName,
+    lastName,
+    employeeId,
+  }: { firstName: string; lastName: string; employeeId: string },
+) {
   return prisma.profile.upsert({
     where: { userId },
     create: {

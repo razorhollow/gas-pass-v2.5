@@ -1,8 +1,8 @@
 export default function ProfileRoute() {
-    return (
-        <div>
-            <h1>Profile</h1>
-            <p>This is the profile page</p>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Profile</h1>
+      <p>This is the profile page</p>
+    </div>
+  );
 }

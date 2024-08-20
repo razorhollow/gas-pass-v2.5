@@ -1,4 +1,3 @@
-
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronDownIcon,
@@ -10,10 +9,10 @@ import {
   HomeIcon,
   MagnifyingGlassIcon,
   TicketIcon,
-  UsersIcon
+  UsersIcon,
 } from "@heroicons/react/20/solid";
 import { json, LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData , Form, Outlet } from "@remix-run/react";
+import { useLoaderData, Form, Outlet } from "@remix-run/react";
 
 import {
   Dropdown,
@@ -78,7 +77,9 @@ export default function Dashboard() {
                   <ArrowRightStartOnRectangleIcon />
                   <DropdownLabel>
                     <Form action="/logout" method="POST">
-                      <button type="submit" className="w-full text-left">Sign out</button>
+                      <button type="submit" className="w-full text-left">
+                        Sign out
+                      </button>
                     </Form>
                   </DropdownLabel>
                 </DropdownItem>
@@ -139,21 +140,17 @@ export default function Dashboard() {
                 <TicketIcon />
                 <SidebarLabel>Tickets</SidebarLabel>
               </SidebarItem>
-              { user.isAdmin ? 
+              {user.isAdmin ? (
                 <SidebarItem href="/dashboard/users">
                   <UsersIcon />
                   <SidebarLabel>Users</SidebarLabel>
                 </SidebarItem>
-                : 
-                null
-              }
+              ) : null}
             </SidebarSection>
             <SidebarSpacer />
           </SidebarBody>
           <SidebarFooter className="max-lg:hidden">
-            <Dropdown>
-              
-            </Dropdown>
+            <Dropdown></Dropdown>
           </SidebarFooter>
         </Sidebar>
       }

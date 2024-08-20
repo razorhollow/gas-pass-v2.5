@@ -28,7 +28,10 @@ export async function getTicket({
   }
 
   // Check access permissions
-  if (ticket.profileId === userWithProfile.profile.id || userWithProfile.isAdmin) {
+  if (
+    ticket.profileId === userWithProfile.profile.id ||
+    userWithProfile.isAdmin
+  ) {
     return ticket;
   } else {
     throw new Error("User does not have access to this ticket");
@@ -38,10 +41,17 @@ export async function getTicket({
 export function getTicketListItems({ userId }: { userId: User["id"] }) {
   return prisma.ticket.findMany({
     where: {
-      profile:{
-        userId: userId ,
+      profile: {
+        userId: userId,
       },
     },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export function getAdminTicketListItems() {
+  return prisma.ticket.findMany({
+    include: { profile: true },
     orderBy: { createdAt: "desc" },
   });
 }
@@ -49,8 +59,8 @@ export function getTicketListItems({ userId }: { userId: User["id"] }) {
 export function getRecentTicketListItems({ userId }: { userId: User["id"] }) {
   return prisma.ticket.findMany({
     where: {
-      profile:{
-        userId: userId ,
+      profile: {
+        userId: userId,
       },
     },
     orderBy: { createdAt: "desc" },
@@ -71,12 +81,12 @@ export async function createTicket({ userId }: { userId: User["id"] }) {
 
   // If such a ticket exists, return it instead of creating a new one
   if (existingTicket) {
-    console.log("ticket with zero balance found...")
+    console.log("ticket with zero balance found...");
     return existingTicket;
   }
 
   // Otherwise, create a new ticket with amount 0
-  console.log("no zero balance ticket found...")
+  console.log("no zero balance ticket found...");
   return prisma.ticket.create({
     data: {
       amount: 0,
@@ -87,20 +97,15 @@ export async function createTicket({ userId }: { userId: User["id"] }) {
   });
 }
 
-
-
-export function deleteTicket({ id }:Pick<Ticket, "id">) {
+export function deleteTicket({ id }: Pick<Ticket, "id">) {
   return prisma.ticket.deleteMany({
     where: { id },
   });
 }
 
-export function updateTicket({
-  id,
-  amount,
-}: Pick<Ticket, "id" | "amount">) {
+export function updateTicket({ id, amount }: Pick<Ticket, "id" | "amount">) {
   return prisma.ticket.update({
     where: { id },
     data: { amount },
   });
-} 
+}
