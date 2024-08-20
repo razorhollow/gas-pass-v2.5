@@ -15,7 +15,7 @@ interface CustomTicket {
   id: string;
   amount: number;
   createdAt: string;
-  profile?: Profile
+  profile?: Profile;
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -29,7 +29,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     tickets = adminTickets.map((ticket) => ({
       ...ticket,
       createdAt: formatDateToUserTimeZone(ticket.createdAt), // Now, this can be a string
-    }))
+    }));
   } else {
     const userTickets = await getTicketListItems({ userId });
     tickets = userTickets.map((ticket) => ({
@@ -40,8 +40,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return json(tickets);
 }
-
-
 
 export default function TicketIndex() {
   const tickets = useLoaderData<typeof loader>();
@@ -67,7 +65,9 @@ export default function TicketIndex() {
                         ${ticket.amount.toFixed(2)}
                       </p>
                       <p>{new Date(ticket.createdAt).toLocaleDateString()}</p>
-                      {ticket.profile ? <p className="text-gray-500">{ticket.profile.name}</p> : null}
+                      {ticket.profile ? (
+                        <p className="text-gray-500">{ticket.profile.name}</p>
+                      ) : null}
                     </NavLink>
                     <ChevronRightIcon className="h-5 w-5 text-gray-400" />
                   </li>

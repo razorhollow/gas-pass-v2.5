@@ -75,7 +75,7 @@ export default function UsersIndex() {
                   <div className="h-2 w-2 rounded-full bg-current" />
                 </div>
                 <h2 className="min-w-0 text-sm font-semibold leading-6 text-white">
-                  <Link to={`/dashboard/users/${user.id}`}>
+                  <Link to={`/dashboard/${user.id}`}>
                     {user.profile?.name ? (
                       <span className="truncate">{user.profile.name}</span>
                     ) : (
