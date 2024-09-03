@@ -45,6 +45,45 @@ export async function createUser(email: User["email"], password: string) {
   });
 }
 
+export async function updateUserPassword({
+  userId,
+  currentPassword,
+  newPassword,
+}: {
+  userId: User["id"];
+  currentPassword: string;
+  newPassword: string;
+}) {
+  const userWithPassword = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      password: true,
+    },
+  });
+
+  if (!userWithPassword || !userWithPassword.password) {
+    throw new Error("User or password not found");
+  }
+
+  const isValid = await bcrypt.compare(
+    currentPassword,
+    userWithPassword.password.hash,
+  );
+
+  if (!isValid) {
+    throw new Error("Invalid password");
+  }
+
+  const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+  return prisma.password.update({
+    where: { userId },
+    data: {
+      hash: newHashedPassword,
+    },
+  });
+}
+
 export async function deleteUserByEmail(email: User["email"]) {
   return prisma.user.delete({ where: { email } });
 }
